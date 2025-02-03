@@ -6,6 +6,31 @@
 #define LED_YELLOW_PIN 12
 #define LED_GREEN_PIN 11
 
+typedef enum {
+    RED,
+    YELLOW,
+    GREEN
+} LEDstate;
+
+LEDstate currentState = RED;
+
+bool repeating_timer_callback(struct repeating_timer *t) {
+
+    switch (currentState) {
+        case RED:
+            currentState = YELLOW;   
+            break;
+        case YELLOW:
+            currentState = GREEN;        
+            break;
+        case GREEN:
+            currentState = RED;         
+            break;
+    }
+
+    return true;
+}
+
 
 int main() {
     
