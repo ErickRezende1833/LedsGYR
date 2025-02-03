@@ -45,20 +45,35 @@ int main() {
     gpio_set_dir(LED_YELLOW_PIN, GPIO_OUT);
     gpio_set_dir(LED_GREEN_PIN, GPIO_OUT);
 
+    gpio_put(LED_RED_PIN, 1);
+
+    struct repeating_timer timer;
+    add_repeating_timer_ms(3000, repeating_timer_callback, NULL, &timer);
+
     while (true) {
-        gpio_put(LED_RED_PIN, 1);
-        gpio_put(LED_YELLOW_PIN, 0);
-        gpio_put(LED_GREEN_PIN, 0);
-        sleep_ms(3000);
-        gpio_put(LED_RED_PIN, 0);
-        gpio_put(LED_YELLOW_PIN, 1);
-        gpio_put(LED_GREEN_PIN, 0);
-        sleep_ms(3000);
-        gpio_put(LED_RED_PIN, 0);
-        gpio_put(LED_YELLOW_PIN, 0);
-        gpio_put(LED_GREEN_PIN, 1);
-        sleep_ms(3000);
-        
+
+        printf("Estado atual do LED: ");
+        switch (currentState) {
+            case RED:
+                printf("Vermelho\n");
+                gpio_put(LED_RED_PIN, 1);
+                gpio_put(LED_YELLOW_PIN, 0);
+                gpio_put(LED_GREEN_PIN, 0);
+                break;
+            case YELLOW:
+                printf("Amarelo\n");
+                gpio_put(LED_RED_PIN, 0);
+                gpio_put(LED_YELLOW_PIN, 1);
+                gpio_put(LED_GREEN_PIN, 0);
+                break;
+            case GREEN:
+                printf("Verde\n");
+                gpio_put(LED_RED_PIN, 0);
+                gpio_put(LED_YELLOW_PIN, 0);
+                gpio_put(LED_GREEN_PIN, 1);
+                break;
+        }
+        sleep_ms(100);
     }
 
     return 0;
