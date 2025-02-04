@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
+#include "pico/time.h"
 
 #define LED_RED_PIN 13
 #define LED_YELLOW_PIN 12
@@ -16,31 +17,32 @@ LEDstate currentState = RED;
 
 bool repeating_timer_callback(struct repeating_timer *t) {
 
+    gpio_put(LED_RED_PIN, 0);
+    gpio_put(LED_YELLOW_PIN, 0);
+    gpio_put(LED_GREEN_PIN, 0);
+
     switch (currentState) {
         case RED:
-            currentState = YELLOW;   
+            currentState = YELLOW;
             break;
         case YELLOW:
-            currentState = GREEN;        
+            currentState = GREEN;
             break;
         case GREEN:
-            currentState = RED;         
+            currentState = RED;
             break;
     }
 
     return true;
 }
 
-
 int main() {
-    
+
     stdio_init_all();
 
-    
     gpio_init(LED_RED_PIN);
     gpio_init(LED_YELLOW_PIN);
     gpio_init(LED_GREEN_PIN);
-
     gpio_set_dir(LED_RED_PIN, GPIO_OUT);
     gpio_set_dir(LED_YELLOW_PIN, GPIO_OUT);
     gpio_set_dir(LED_GREEN_PIN, GPIO_OUT);
@@ -51,8 +53,8 @@ int main() {
     add_repeating_timer_ms(3000, repeating_timer_callback, NULL, &timer);
 
     while (true) {
-
-        printf("Estado atual do LED: ");
+    
+        printf("Estado atual do semáforo: ");
         switch (currentState) {
             case RED:
                 printf("Vermelho\n");

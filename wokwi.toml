@@ -1,0 +1,18 @@
+[wokwi]
+version = 1
+firmware = "build/LedsGYR.uf2"  # Caminho para o firmware entre aspas
+
+[[parts]]
+type = "pico"  # Define a placa como Raspberry Pi Pico
+
+[[connections]]
+from = "GP13"  # GPIO 13 (LED vermelho)
+to = "LED.R"
+
+[[connections]]
+from = "GP12"  # GPIO 12 (LED amarelo)
+to = "LED.G"
+
+[[connections]]
+from = "GP11"  # GPIO 11 (LED verde)
+to = "LED.B"
